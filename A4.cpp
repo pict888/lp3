@@ -10,12 +10,15 @@ vector<int> board;
 
 bool isSafe(int row, int col)
 {
-    for (int i = 0; i < row; i++)
+    for (int i = 0; i < n; i++)
     {
-        if (board[i] == col)
-            return false;
-        if (abs(board[i] - col) == abs(i - row))
-            return false;
+        if (board[i] != -1)
+        {
+            if (board[i] == col)
+                return false;
+            if (abs(board[i] - col) == abs(i - row))
+                return false;
+        }
     }
     return true;
 }
@@ -35,7 +38,6 @@ void printBoard()
         cout << endl;
     }
 }
-
 void solve(int row)
 {
     if (found)
