@@ -3,6 +3,7 @@
 #include <queue>
 #include <map>
 #include <string>
+#include <vector>
 using namespace std;
 
 struct Node
@@ -34,6 +35,9 @@ void printCodes(Node *root, string code, map<char, string> &codes)
 
     if (root->left == NULL && root->right == NULL)
     {
+        if (code == "")
+            code = "0";
+
         codes[root->ch] = code;
         cout << root->ch << " : " << code << endl;
         return;
@@ -52,14 +56,28 @@ int main()
     cout << "Enter text: ";
     getline(cin, text);
 
+    if (text.empty())
+    {
+        cout << "Empty input!";
+        return 0;
+    }
+
+    // Calculate frequency
     for (char ch : text)
         freq[ch]++;
 
+    // Display frequency
+    cout << "\nCharacter Frequencies:\n";
+    for (auto p : freq)
+        cout << p.first << " : " << p.second << endl;
+
+    // Create Min Priority Queue
     priority_queue<Node *, vector<Node *>, Compare> pq;
 
     for (auto p : freq)
         pq.push(new Node(p.first, p.second));
 
+    // Build Huffman Tree
     while (pq.size() > 1)
     {
         Node *left = pq.top();
@@ -72,16 +90,20 @@ int main()
 
         parent->left = left;
         parent->right = right;
+
         pq.push(parent);
     }
 
+    // Generate Huffman Codes
     cout << "\nHuffman Codes:\n";
     printCodes(pq.top(), "", codes);
 
-    cout << "\nEncoded string: ";
+    // Encode original text
+    cout << "\nEncoded String: ";
     for (char ch : text)
         cout << codes[ch];
 
     cout << endl;
+
     return 0;
 }
